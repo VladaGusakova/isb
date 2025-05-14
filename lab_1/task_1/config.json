@@ -1,0 +1,9 @@
+{
+  "alphabet": "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+  "file_paths": {
+    "text": "text.txt",
+    "key": "key.json",
+    "encrypted": "encrypted.txt",
+    "decrypted": "decrypted.txt"
+  }
+}
