@@ -1,10 +1,19 @@
-import json
-from file_operations import read_config, read_text_file, read_key_from_json, write_to_file
+from lab_1.file_operations import read_config, read_file, read_key_from_json, write_file
 
 
-def initialize_alphabet(config):
-    alphabet = config['alphabet']
-    return alphabet, len(alphabet)
+def initialize_alphabet(config: dict) -> tuple:
+    '''
+    Initialize alphabet from configuration.
+    :param config:
+    :return: Tuple of (alphabet string, alphabet length)
+    '''
+    try:
+        alphabet = config.get('alphabet')
+        if len(alphabet) == 0:
+            raise ValueError("Alphabet cannot be empty")
+        return alphabet, len(alphabet)
+    except Exception as e:
+        raise ValueError(f"Alphabet initialization error: {str(e)}")
 
 
 def create_key_sequence(key: str, text_length: int, alphabet: str) -> list:
@@ -35,16 +44,17 @@ def encrypt(text: str, key_sequence: list, alphabet: str, alphabet_len: int) -> 
     '''
     encrypted_text = []
     for i, char in enumerate(text):
-        if char in alphabet:
-            char_num = alphabet.index(char) + 1
+        original_char = char
+        upper_char = original_char.upper()
+        if upper_char in alphabet:
+            char_num = alphabet.index(upper_char) + 1
             key_num = key_sequence[i]
             encrypted_num = (char_num + key_num) % alphabet_len
-            if encrypted_num == 0:
-                encrypted_num = alphabet_len
+            encrypted_num = encrypted_num if encrypted_num != 0 else alphabet_len
             encrypted_char = alphabet[encrypted_num - 1]
             encrypted_text.append(encrypted_char)
         else:
-            encrypted_text.append(char)
+            encrypted_text.append(original_char)
     return ''.join(encrypted_text)
 
 
@@ -77,21 +87,21 @@ def main() -> None:
     Main function to handle encryption and decryption
     :return: None
     '''
-    config = read_config()
+    config = read_config(required_keys=['alphabet','file_paths'])
     alphabet, alphabet_len = initialize_alphabet(config)
     file_paths = config['file_paths']
 
-    original_text = read_text_file(file_paths['text'])
+    original_text = read_file(file_paths['text'])
     key = read_key_from_json(file_paths['key'])
 
     key = ''.join([char for char in key if char in alphabet])
 
     key_sequence = create_key_sequence(key, len(original_text), alphabet)
     encrypted_text = encrypt(original_text, key_sequence, alphabet, alphabet_len)
-    write_to_file(file_paths['encrypted'], encrypted_text)
+    write_file(file_paths['encrypted'], encrypted_text)
 
     decrypted_text = decrypt(encrypted_text, key_sequence, alphabet, alphabet_len)
-    write_to_file(file_paths['decrypted'], decrypted_text)
+    write_file(file_paths['decrypted'], decrypted_text)
 
     print("Encryption and decryption completed.")
 
