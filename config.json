@@ -1,0 +1,5 @@
+{
+    "cpp_seq_path": "cpp_seq.json",
+    "java_seq_path": "java_seq.json",
+    "results_path": "results.json"
+}
