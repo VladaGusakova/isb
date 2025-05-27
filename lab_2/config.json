@@ -2,4 +2,5 @@
     "cpp_seq_path": "cpp_seq.json",
     "java_seq_path": "java_seq.json",
     "results_path": "results.json"
+    "pi" : [0.2148, 0.3672, 0.2305, 0.1875]
 }
