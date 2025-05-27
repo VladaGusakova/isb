@@ -23,17 +23,15 @@ def read_sequence(filename : str) -> str:
     try:
         with open(filename, 'r') as f:
             data = json.load(f)
+        if 'sequence' not in data:
+            raise KeyError(f"The file {filename} is missing the 'sequence' key.")
+        return data['sequence']
     except FileNotFoundError as e:
         raise FileNotFoundError(f"File {filename} not found.") from e
     except json.JSONDecodeError as e:
         raise ValueError(f"File {filename} contains invalid JSON.") from e
     except Exception as e:
         raise RuntimeError(f"Unknown error loading file {filename}: {e}") from e
-
-    if 'sequence' not in data:
-        raise KeyError(f"The file {filename} is missing the 'sequence' key.")
-    sequence = data['sequence']
-    return sequence
 
 
 def save_results(filename : str, results : dict) -> None:
