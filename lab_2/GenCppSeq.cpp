@@ -4,6 +4,11 @@
 #include <random>
 #include <string>
 
+/**
+* @brief Generates a random bit sequence
+* @param length Length of the sequence (default 128 bits)
+* @return Generated sequence as a string
+*/
 std::string generate_seq(size_t length = 128) {
     std::string sequence;
 
@@ -17,6 +22,11 @@ std::string generate_seq(size_t length = 128) {
     return sequence;
 }
 
+/**
+* @brief Saves a sequence to a JSON file
+* @param sequence The sequence to save
+* @param filename The file name to save
+*/
 void save_seq(const std::string& sequence, const std::string& filename) {
     std::ofstream outFile(filename);
     if (!outFile) {
@@ -27,6 +37,10 @@ void save_seq(const std::string& sequence, const std::string& filename) {
     outFile.close();
 }
 
+/**
+* @brief Main function of the program
+* @return Program exit code
+*/
 int main() {
     std::string sequence = generate_seq(128);
     save_seq(sequence, "cpp_seq.json");
