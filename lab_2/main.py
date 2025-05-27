@@ -5,6 +5,7 @@ def analyze_sequence(bits : str, pi : list) -> dict:
     '''
     Just to organize the information
     :param bits: sequence
+    :param pi: pi values
     :return: Results
     '''
     return {
