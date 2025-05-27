@@ -28,11 +28,12 @@ def identical_consecutive_bits_test(bits : str) -> float:
     return p_value
 
 
-def longest_seq_ones_in_block_test(bits : str, block_size=8) -> float:
+def longest_seq_ones_in_block_test(bits : str, pi : list, block_size=8) -> float:
     '''
     Test for the longest sequence of ones in a block.
     :param bits: sequence
     :param block_size: block size(8)
+    :param pi: pi values
     :return: p_value
     '''
     if len(bits) != 128:
@@ -51,15 +52,15 @@ def longest_seq_ones_in_block_test(bits : str, block_size=8) -> float:
                 max_seq = max(max_seq, current_seq)
             else:
                 current_seq = 0
-        if max_seq <= 1:
-            v[0] += 1
-        elif max_seq == 2:
-            v[1] += 1
-        elif max_seq == 3:
-            v[2] += 1
-        else:
-            v[3] += 1
-    pi = [0.2148, 0.3672, 0.2305, 0.1875]
+        match max_seq:
+            case x if x <= 1:
+                v[0] += 1
+            case 2:
+                v[1] += 1
+            case 3:
+                v[2] += 1
+            case _:
+                v[3] += 1
     chi2 = sum((v[i] - num_blocks * pi[i])**2 / (num_blocks * pi[i]) for i in range(4))
     p_value = gammainc(3 / 2, chi2 / 2)
     return p_value
