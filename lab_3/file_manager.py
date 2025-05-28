@@ -5,6 +5,21 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 
 class FileManager:
+        def read_key_length_from_file(self, filepath: str) -> int:
+        '''
+        Reads CAST5 key length from a text file.
+        Expects the file to contain a single integer number.
+        :param filepath: Path to the text file containing key length
+        :return: Key length
+        '''
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                content = f.read().strip()
+                key_length = int(content)
+                return key_length
+        except Exception as e:
+            raise IOError(f"Error reading key length from file '{filepath}': {e}")
+            
     def read_file(self, filepath : str) -> bytes:
         '''
         Reads binary data from a file.
