@@ -14,9 +14,16 @@ def main() -> None:
         parser = create_parser()
         args = parser.parse_args()
 
-        if args.cast_key_length < 40 or args.cast_key_length > 128 or args.cast_key_length % 8 != 0:
-            raise ValueError("Incorrect key length.")
-        config['cast_key_length'] = args.cast_key_length
+        if  os.path.isfile(config.get('key_length')):
+            key_length = file_manager.read_key_length_from_file(config.get('key_length'))
+            if (key_length < 40 or key_length > 128) or key_length % 8 != 0:
+                raise ValueError("Incorrect key length.")
+            config['cast_key_length'] = key_length
+        else:
+            key_length = args.cast_key_length
+            if (key_length < 40 or key_length > 128) or key_length % 8 != 0:
+                raise ValueError("Incorrect key length.")
+            config['cast_key_length'] = key_length
 
         crypto = HybridCrypto(config, file_manager)
         if args.generation:
